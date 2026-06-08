@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MicrostructureLab</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 0; background: #0f172a; color: #e5e7eb; }
+    main { max-width: 1100px; margin: 0 auto; padding: 32px; }
+    button, input, select { padding: 10px; border-radius: 8px; border: 1px solid #334155; margin: 4px; }
+    button { cursor: pointer; font-weight: 700; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .card { background: #111827; border: 1px solid #334155; border-radius: 14px; padding: 16px; }
+    pre { white-space: pre-wrap; overflow-wrap: anywhere; background: #020617; padding: 12px; border-radius: 10px; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>MicrostructureLab</h1>
+    <p>Order-book simulator, benchmark runner, and market-open research screener.</p>
+    <div class="grid">
+      <section class="card">
+        <h2>Benchmark</h2>
+        <input id="orders" value="10000" />
+        <button onclick="benchmark()">Run</button>
+      </section>
+      <section class="card">
+        <h2>Screener</h2>
+        <input id="symbols" value="NVDA,TSLA,AMD,AAPL" />
+        <button onclick="screenOpen()">Screen</button>
+      </section>
+    </div>
+    <section class="card" style="margin-top:16px">
+      <h2>Output</h2>
+      <pre id="out">{}</pre>
+    </section>
+  </main>
+  <script>
+    async function benchmark() {
+      const orders = document.getElementById('orders').value;
+      const res = await fetch(`/benchmark?orders=${orders}`);
+      document.getElementById('out').textContent = JSON.stringify(await res.json(), null, 2);
+    }
+    async function screenOpen() {
+      const symbols = document.getElementById('symbols').value.split(',').map(s => s.trim());
+      const res = await fetch('/screen/open', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({symbols})});
+      document.getElementById('out').textContent = JSON.stringify(await res.json(), null, 2);
+    }
+  </script>
+</body>
+</html>
