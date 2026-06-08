@@ -1,0 +1,5 @@
+order_id,client_id,symbol,side,order_type,quantity,price,time_in_force
+b1,maker-a,AAPL,BUY,LIMIT,500,19199,GTC
+a1,maker-b,AAPL,SELL,LIMIT,500,19201,GTC
+t1,taker,AAPL,BUY,MARKET,100,,IOC
+l1,alpha,AAPL,SELL,LIMIT,100,19202,GTC
